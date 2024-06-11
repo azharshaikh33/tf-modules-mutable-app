@@ -1,4 +1,4 @@
-resource "null_resource" "name" {
+resource "null_resource" "app" {
 
             count   = var.OD_INSTANCE_COUNT + var.SPOT_INSTANCE_COUNT
 
