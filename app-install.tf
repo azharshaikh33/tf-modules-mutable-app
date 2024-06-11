@@ -5,13 +5,13 @@ resource "null_resource" "name" {
     provisioner "remote-exec" {
         connection {
             type     = "ssh"
-            user     = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SSH_USERNAME"]
-            password = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SSH_PASSWORD"]
+            user     = local.SSH_USER
+            password = local.SSH_PASS
             host     = element(local.INSTANCE_IPS, count.index)
         }
 
     inline = [
-      "ansible-pull -U https://github.com/azharshaikh33/ansible.git robot-pull.yml -e ENV=dev -e COMPONENT=mongodb"
+      "ansible-pull -U https://github.com/azharshaikh33/ansible.git robot-pull.yml -e ENV=${var.ENV} -e COMPONENT=${var.COMPONENT} -e APP_VERSION=${var.APP_VERSION}"
     ]
   }
 }
