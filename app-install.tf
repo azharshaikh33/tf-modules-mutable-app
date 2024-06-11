@@ -7,7 +7,7 @@ resource "null_resource" "name" {
             type     = "ssh"
             user     = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SSH_USERNAME"]
             password = jsondecode(data.aws_secretsmanager_secret_version.secrets.secret_string)["SSH_PASSWORD"]
-            host     = concat()
+            host     = element(local.INSTANCE_IPS, count.index)
         }
 
     inline = [
