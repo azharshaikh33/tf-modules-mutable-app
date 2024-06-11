@@ -15,7 +15,7 @@ resource "aws_spot_instance_request" "spot" {
 # creating a on-demand instance
 
 resource "aws_instance" "od" {
-  count = var.OD_INSTANCE_TYPE
+  count = var.OD_INSTANCE_COUNT
   ami           = data.aws_ami.My_ami.id
   instance_type = var.INSTANCE_TYPE
   vpc_security_group_ids = [aws_security_group.allow_app.id]
