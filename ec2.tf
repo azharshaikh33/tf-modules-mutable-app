@@ -8,7 +8,7 @@ resource "aws_spot_instance_request" "spot" {
   subnet_id = element(data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS, count.index)
 
   tags = {
-    Name = "${var.COMPONENT}-${var.ENV}-spot"
+    Name = "${var.COMPONENT}-${var.ENV}"
   }
 }
 
@@ -22,6 +22,13 @@ resource "aws_instance" "od" {
   subnet_id = element(data.terraform_remote_state.vpc.outputs.PRIVATE_SUBNET_IDS, count.index)
 
   tags = {
-    Name = "${var.COMPONENT}-${var.ENV}-od"
+    Name = "${var.COMPONENT}-${var.ENV}"
   }
+}
+
+resource "aws_ec2_tag" "ec2_tags" {
+  count       = var.OD_INSTANCE_COUNT + var.SPOT_INSTANCE_COUNT
+  resource_id = element(local.INSTANCE_IDS, count.index)
+  key         = "Name"
+  value       = "${var.COMPONENT}-${var.ENV}"
 }
